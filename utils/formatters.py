@@ -108,3 +108,91 @@ def format_clan_members(members: List[Dict]) -> str:
     
     return text
 
+
+def format_war_info(war_data: Dict) -> str:
+    """Форматирование информации о клановой войне"""
+    if not war_data:
+        return "❌ Нет активной клановой войны"
+    
+    state = war_data.get("state", "unknown")
+    clan = war_data.get("clan", {})
+    opponent = war_data.get("opponent", {})
+    
+    # Определяем фазу войны
+    if state == "collectionDay":
+        phase = "📦 День сбора карт"
+    elif state == "warDay":
+        phase = "⚔️ День битвы"
+    elif state == "ended":
+        phase = "🏁 Война завершена"
+    else:
+        phase = f"❓ {state}"
+    
+    text = f"{phase}\n\n"
+    
+    # Информация о нашем клане
+    clan_name = clan.get("name", "N/A")
+    clan_tag = clan.get("tag", "N/A")
+    clan_crowns = clan.get("crowns", 0)
+    clan_participants = len(clan.get("participants", []))
+    
+    text += f"🏰 <b>Ваш клан:</b> {clan_name} {clan_tag}\n"
+    text += f"👥 Участников: {clan_participants}\n"
+    
+    if state == "warDay":
+        text += f"👑 Корон: {clan_crowns}\n"
+    
+    # Информация о противнике
+    if opponent:
+        opponent_name = opponent.get("name", "N/A")
+        opponent_tag = opponent.get("tag", "N/A")
+        opponent_crowns = opponent.get("crowns", 0)
+        opponent_participants = len(opponent.get("participants", []))
+        
+        text += f"\n⚔️ <b>Противник:</b> {opponent_name} {opponent_tag}\n"
+        text += f"👥 Участников: {opponent_participants}\n"
+        
+        if state == "warDay":
+            text += f"👑 Корон: {opponent_crowns}\n"
+            text += f"\n📊 <b>Счет:</b> {clan_crowns} - {opponent_crowns}"
+    
+    return text
+
+
+def format_player_war_stats(war_data: Dict, player_tag: str) -> str:
+    """Форматирование статистики игрока в войне"""
+    if not war_data:
+        return "❌ Нет активной клановой войны"
+    
+    clean_tag = player_tag.replace("#", "").upper()
+    participants = war_data.get("clan", {}).get("participants", [])
+    
+    # Ищем игрока среди участников
+    player = None
+    for participant in participants:
+        tag = participant.get("tag", "").replace("#", "").upper()
+        if tag == clean_tag:
+            player = participant
+            break
+    
+    if not player:
+        return f"❌ Игрок {player_tag} не найден среди участников войны"
+    
+    name = player.get("name", "N/A")
+    cards_earned = player.get("cardsEarned", 0)
+    battles_played = player.get("battlesPlayed", 0)
+    battles_remaining = player.get("battlesRemaining", 0)
+    wins = player.get("wins", 0)
+    
+    text = f"👤 <b>{name}</b> {player_tag}\n\n"
+    text += f"📦 <b>Карт собрано:</b> {cards_earned}\n"
+    text += f"⚔️ <b>Битв сыграно:</b> {battles_played}\n"
+    text += f"⏳ <b>Осталось битв:</b> {battles_remaining}\n"
+    text += f"✅ <b>Побед:</b> {wins}\n"
+    
+    if battles_played > 0:
+        win_rate = (wins / battles_played * 100)
+        text += f"📊 <b>Винрейт:</b> {win_rate:.1f}%"
+    
+    return text
+
