@@ -20,16 +20,6 @@ class BroadcastState(StatesGroup):
     waiting_for_caption = State()
 
 
-def check_admin(func):
-    """Декоратор для проверки прав админа"""
-    async def wrapper(message: Message, *args, **kwargs):
-        if not db.is_admin(message.from_user.id):
-            await message.answer("❌ У вас нет прав администратора.")
-            return
-        return await func(message, *args, **kwargs)
-    return wrapper
-
-
 def get_admin_keyboard() -> InlineKeyboardMarkup:
     """Клавиатура админ-панели"""
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
@@ -53,9 +43,12 @@ def get_admin_keyboard() -> InlineKeyboardMarkup:
 
 
 @router.message(Command("admin"))
-@check_admin
 async def cmd_admin(message: Message):
     """Открыть админ-панель"""
+    if not db.is_admin(message.from_user.id):
+        await message.answer("❌ У вас нет прав администратора.")
+        return
+    
     text = (
         "⚙️ <b>Админ-панель</b>\n\n"
         "Выберите действие:"
@@ -396,31 +389,88 @@ async def admin_manage(callback: CallbackQuery):
 @router.message(Command("addadmin"))
 async def cmd_addadmin(message: Message):
     """Добавить админа"""
-    # Если нет админов, разрешаем добавить первого
-    admins = db.get_all_admins()
-    if admins and not db.is_admin(message.from_user.id):
-        await message.answer("❌ У вас нет прав администратора.")
+    from config import SUPER_ADMIN_ID
+    
+    # Проверяем, что команду использует супер-админ
+    if message.from_user.id != SUPER_ADMIN_ID:
+        await message.answer("❌ У вас нет прав для выполнения этой команды.")
         return
     
-    parts = message.text.split()
-    if len(parts) < 2:
-        # Если не указан ID, добавляем текущего пользователя
-        user_id = message.from_user.id
-    else:
-        try:
-            user_id = int(parts[1])
-        except ValueError:
-            await message.answer("❌ Неверный формат telegram_id.")
-            return
+    user_id = None
+    target_user = None
+    username = None
     
+    # Проверяем, есть ли аргумент (тег)
+    parts = message.text.split(maxsplit=1)
+    if len(parts) > 1:
+        # Пытаемся найти пользователя по тегу
+        tag = parts[1].strip()
+        user_data = db.get_user_by_royale_tag(tag)
+        
+        if not user_data:
+            await message.answer(
+                f"❌ Пользователь с тегом <code>{tag}</code> не найден в базе данных.\n\n"
+                f"Убедитесь, что пользователь указал свой ник командой /setnick",
+                parse_mode="HTML"
+            )
+            return
+        
+        user_id = user_data["telegram_id"]
+        username = user_data.get("royale_nickname", "N/A")
+        
+    # Если нет аргумента, проверяем ответ на сообщение
+    elif message.reply_to_message:
+        target_user = message.reply_to_message.from_user
+        user_id = target_user.id
+        
+        # Проверяем, не является ли пользователь ботом
+        if target_user.is_bot:
+            await message.answer("❌ Нельзя добавить бота в админы.")
+            return
+        
+        username = f"@{target_user.username}" if target_user.username else target_user.first_name
+        
+        # Добавляем пользователя в базу данных, если его там нет
+        db.add_user(user_id, target_user.username)
+    
+    else:
+        await message.answer(
+            "❌ Укажите тег игрока или ответьте на сообщение пользователя.\n\n"
+            "<b>Использование:</b>\n"
+            "• <code>/addadmin 2PP</code> - добавить по тегу\n"
+            "• Ответить на сообщение командой <code>/addadmin</code> - добавить того, кому ответили",
+            parse_mode="HTML"
+        )
+        return
+    
+    # Проверяем, не является ли пользователь уже админом
+    if db.is_admin(user_id):
+        await message.answer(
+            f"⚠️ Пользователь <b>{username}</b> (ID: {user_id}) уже является администратором.",
+            parse_mode="HTML"
+        )
+        return
+    
+    # Добавляем пользователя в админы
     db.add_admin(user_id, message.from_user.id)
-    await message.answer(f"✅ Пользователь {user_id} добавлен в админы.")
+    
+    royale_tag = ""
+    if user_data:
+        royale_tag = f" #{user_data.get('royale_tag', '')}"
+    
+    await message.answer(
+        f"✅ Пользователь <b>{username}</b>{royale_tag} (ID: {user_id}) добавлен в админы.",
+        parse_mode="HTML"
+    )
 
 
 @router.message(Command("removeadmin"))
-@check_admin
 async def cmd_removeadmin(message: Message):
     """Удалить админа"""
+    if not db.is_admin(message.from_user.id):
+        await message.answer("❌ У вас нет прав администратора.")
+        return
+    
     parts = message.text.split()
     if len(parts) < 2:
         await message.answer("❌ Укажите telegram_id пользователя.\nПример: /removeadmin 123456789")
@@ -435,9 +485,12 @@ async def cmd_removeadmin(message: Message):
 
 
 @router.message(Command("listadmins"))
-@check_admin
 async def cmd_listadmins(message: Message):
     """Список админов"""
+    if not db.is_admin(message.from_user.id):
+        await message.answer("❌ У вас нет прав администратора.")
+        return
+    
     admins = db.get_all_admins()
     if not admins:
         await message.answer("📋 Список админов пуст.")

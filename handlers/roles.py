@@ -1,4 +1,4 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
 from database import db
@@ -11,28 +11,22 @@ logger = logging.getLogger(__name__)
 router = Router()
 
 
-def check_admin(func):
-    """Декоратор для проверки прав админа"""
-    async def wrapper(message: Message, *args, **kwargs):
-        if not db.is_admin(message.from_user.id):
-            await message.answer("❌ У вас нет прав администратора.")
-            return
-        return await func(message, *args, **kwargs)
-    return wrapper
-
-
 @router.message(Command("setrole"))
-@check_admin
 async def cmd_setrole(message: Message):
     """Назначить роль на основе ника в рояле"""
+    if not db.is_admin(message.from_user.id):
+        await message.answer("❌ У вас нет прав администратора.")
+        return
+    
     parts = message.text.split(maxsplit=2)
     
     if len(parts) < 3:
         await message.answer(
             "❌ Неверный формат команды.\n"
-            "Использование: /setrole <ник_в_рояле> <роль>\n"
+            "Использование: /setrole &lt;ник_в_рояле&gt; &lt;роль&gt;\n"
             "Роли: leader, coLeader, elder, member\n\n"
-            "Пример: /setrole PlayerName elder"
+            "Пример: /setrole PlayerName elder",
+            parse_mode="HTML"
         )
         return
     
@@ -67,9 +61,12 @@ async def cmd_setrole(message: Message):
 
 
 @router.message(Command("syncroles"))
-@check_admin
 async def cmd_syncroles(message: Message):
     """Синхронизировать роли с кланом"""
+    if not db.is_admin(message.from_user.id):
+        await message.answer("❌ У вас нет прав администратора.")
+        return
+    
     if not CLAN_TAG:
         await message.answer("❌ Тег клана не настроен.")
         return

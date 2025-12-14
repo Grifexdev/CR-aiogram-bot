@@ -96,6 +96,17 @@ class Database:
                 return dict(row)
             return None
     
+    def get_user_by_royale_tag(self, royale_tag: str) -> Optional[Dict]:
+        """Найти пользователя по тегу в Clash Royale"""
+        clean_tag = royale_tag.replace("#", "").upper()
+        with self._get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM users WHERE UPPER(REPLACE(royale_tag, '#', '')) = ?", (clean_tag,))
+            row = cursor.fetchone()
+            if row:
+                return dict(row)
+            return None
+    
     def get_all_users(self) -> List[Dict]:
         """Получить всех пользователей"""
         with self._get_connection() as conn:
