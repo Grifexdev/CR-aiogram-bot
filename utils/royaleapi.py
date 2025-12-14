@@ -25,7 +25,7 @@ class RoyaleAPI:
                 async with session.get(url, headers=self.headers) as response:
                     if response.status == 200:
                         html = await response.text()
-                        soup = BeautifulSoup(html, 'lxml')
+                        soup = BeautifulSoup(html, 'html.parser')
                         
                         # Парсим основную информацию
                         player_data = {}
@@ -69,7 +69,7 @@ class RoyaleAPI:
                 async with session.get(url, headers=self.headers) as response:
                     if response.status == 200:
                         html = await response.text()
-                        soup = BeautifulSoup(html, 'lxml')
+                        soup = BeautifulSoup(html, 'html.parser')
                         
                         war_data = {}
                         
